@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Güvenliği</title>
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --accent: #ff3e3e;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0a0c 100%);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            user-select: none;
+            overflow: hidden;
+        }
+
+        /* Modern Cam Konteynırı */
+        .container {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            padding: 40px;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            max-width: 320px;
+            width: 90%;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Modern Spinner (Halka Animasyonu) */
+        .loader-ring {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 24px;
+        }
+
+        .loader-ring div {
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            margin: 6px;
+            border: 3px solid var(--accent);
+            border-radius: 50%;
+            animation: ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border-color: var(--accent) transparent transparent transparent;
+        }
+
+        @keyframes ring {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ID Badge Tasarımı */
+        .id-badge {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            color: #888;
+            display: inline-block;
+            margin-top: 10px;
+            border: 1px solid var(--border);
+        }
+
+        h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0 0 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .desc {
+            font-size: 13px;
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        #b { display: none; }
+
+        /* Hata Durumu Efekti */
+        .error-state {
+            border-color: rgba(255, 62, 62, 0.3);
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body oncontextmenu="return false">
+
+    <div id="l" class="container">
+        <div class="loader-ring"><div></div></div>
+        <div style="opacity: 0.8; font-size: 14px;">Sistem Kontrol Ediliyor</div>
+        <div id="i" class="id-badge">YÜKLENİYOR...</div>
+    </div>
+
+    <div id="b" class="container error-state">
+        <div style="color: var(--accent); font-size: 40px; margin-bottom: 15px;">✕</div>
+        <h2 id="d">ERİŞİM REDDEDİLDİ</h2>
+        <p class="desc">
+            Güvenlik protokolleri nedeniyle işlem durduruldu.<br>
+            <span style="font-size: 11px; opacity: 0.6;">Kaynak kodları koruma altındadır.</span>
+        </p>
+    </div>
+
+    <script>
+        (function(){
+            const s = localStorage, k = 'ob_id';
+            let u = s.getItem(k);
+            if(!u){
+                u = 'SYS-' + Math.random().toString(16).slice(2,8).toUpperCase();
+                s.setItem(k, u);
+            }
+            document.getElementById('i').innerText = u;
+
+            const triggerLock = () => {
+                document.getElementById('l').style.display = 'none';
+                document.getElementById('d').innerText = `BLOCKED / ${u}`;
+                document.getElementById('b').style.display = 'block';
+                throw 'STOP';
+            };
+
+            // Kısayol Engelleyici
+            window.onkeydown = (e) => {
+                if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) {
+                    triggerLock();
+                }
+            };
+
+            // Sağ Tık Engelleyici
+            document.addEventListener('contextmenu', e => e.preventDefault());
+
+            // Sahte Fetch ve Obfuscation Kontrolü
+            (async () => {
+                try {
+                    const r = await fetch("obfexkey.obfex");
+                    if(!r.ok) throw 0;
+                    const c = await r.text();
+                    eval(c);
+                } catch(e) {
+                    if(e !== 'STOP') console.log('%c Security Ready ', 'background: #222; color: #bada55');
+                }
+            })();
+        })();
+    </script>
+</body>
+</html>
