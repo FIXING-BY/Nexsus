@@ -2,164 +2,125 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Sistem Güvenliği</title>
     <style>
         :root {
-            --bg: #0a0a0c;
-            --accent: #ff3e3e;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.1);
+            --b: #0a0a0c;
+            --a: #ff3e3e;
+            --g: rgba(255, 255, 255, 0.03);
+            --f: 'Inter', -apple-system, sans-serif;
         }
 
         body {
             margin: 0;
-            background-color: var(--bg);
-            background-image: 
-                radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0a0c 100%);
+            background-color: var(--b);
+            background-image: radial-gradient(circle at 50% 50%, #171725 0%, #0a0a0c 100%);
             color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: var(--f);
             user-select: none;
             overflow: hidden;
         }
 
-        /* Modern Cam Konteynırı */
-        .container {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border);
+        /* Modern Glass Container */
+        .c_ {
+            background: var(--g);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 40px;
             border-radius: 24px;
             text-align: center;
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
             max-width: 320px;
-            width: 90%;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 85%;
+            animation: a_i 0.6s ease-out;
         }
 
-        /* Modern Spinner (Halka Animasyonu) */
-        .loader-ring {
+        @keyframes a_i { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Neon Pulse Spinner */
+        .l_s {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 25px;
             position: relative;
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 24px;
         }
 
-        .loader-ring div {
+        .l_s div {
             box-sizing: border-box;
             display: block;
             position: absolute;
-            width: 48px;
-            height: 48px;
-            margin: 6px;
-            border: 3px solid var(--accent);
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--a);
             border-radius: 50%;
-            animation: ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-            border-color: var(--accent) transparent transparent transparent;
+            animation: l_a 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border-color: var(--a) transparent transparent transparent;
+            box-shadow: 0 0 10px rgba(255, 62, 62, 0.2);
         }
 
-        @keyframes ring {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes l_a { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* ID Badge Tasarımı */
-        .id-badge {
+        .i_b {
             background: rgba(255, 255, 255, 0.05);
-            padding: 6px 14px;
+            padding: 7px 15px;
             border-radius: 100px;
-            font-size: 11px;
-            letter-spacing: 1.5px;
+            font-size: 10px;
+            letter-spacing: 2px;
             color: #888;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 15px;
             display: inline-block;
-            margin-top: 10px;
-            border: 1px solid var(--border);
-        }
-
-        h2 {
-            font-size: 18px;
-            font-weight: 600;
-            margin: 0 0 12px;
-            letter-spacing: -0.5px;
-        }
-
-        .desc {
-            font-size: 13px;
-            color: #aaa;
-            line-height: 1.6;
-            margin-bottom: 0;
         }
 
         #b { display: none; }
 
-        /* Hata Durumu Efekti */
-        .error-state {
-            border-color: rgba(255, 62, 62, 0.3);
-            transform: scale(1.02);
+        .e_ { border-color: rgba(255, 62, 62, 0.3) !important; box-shadow: 0 0 30px rgba(255, 62, 62, 0.15); }
+
+        /* DİNAMİK RENK DEĞİŞTİREN QONO SECURE YAZISI */
+        .q_s {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            z-index: 9999;
+            pointer-events: none;
+            color: white; /* Temel renk */
+            mix-blend-mode: difference; /* Bu büyü arkaplana göre rengi tersine çevirir */
+            font-family: var(--f);
+            opacity: 0.8;
         }
     </style>
 </head>
 <body oncontextmenu="return false">
 
-    <div id="l" class="container">
-        <div class="loader-ring"><div></div></div>
-        <div style="opacity: 0.8; font-size: 14px;">Sistem Kontrol Ediliyor</div>
-        <div id="i" class="id-badge">YÜKLENİYOR...</div>
+    <div id="l" class="c_">
+        <div class="l_s"><div></div></div>
+        <div style="opacity: 0.7; font-size: 13px; font-weight: 300;">CORE PROTOCOL ACTIVE</div>
+        <div id="i" class="i_b">LOADING...</div>
     </div>
 
-    <div id="b" class="container error-state">
-        <div style="color: var(--accent); font-size: 40px; margin-bottom: 15px;">✕</div>
-        <h2 id="d">ERİŞİM REDDEDİLDİ</h2>
-        <p class="desc">
-            Güvenlik protokolleri nedeniyle işlem durduruldu.<br>
-            <span style="font-size: 11px; opacity: 0.6;">Kaynak kodları koruma altındadır.</span>
+    <div id="b" class="c_ e_">
+        <div style="color: var(--a); font-size: 40px; margin-bottom: 20px; font-weight: 100;">✕</div>
+        <div style="font-size: 16px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 10px;">ACCESS DENIED</div>
+        <div id="d" style="font-size: 11px; color: #888; letter-spacing: 1px; margin-bottom: 20px; padding: 5px; background: rgba(255,62,62,0.1); border-radius: 4px;"></div>
+        <p style="font-size: 12px; color: #aaa; line-height: 1.6; margin: 0;">
+            Security violation detected.<br>Source code protection is active.
         </p>
     </div>
 
+    <div class="q_s">Qono Secure</div>
+
     <script>
-        (function(){
-            const s = localStorage, k = 'ob_id';
-            let u = s.getItem(k);
-            if(!u){
-                u = 'SYS-' + Math.random().toString(16).slice(2,8).toUpperCase();
-                s.setItem(k, u);
-            }
-            document.getElementById('i').innerText = u;
-
-            const triggerLock = () => {
-                document.getElementById('l').style.display = 'none';
-                document.getElementById('d').innerText = `BLOCKED / ${u}`;
-                document.getElementById('b').style.display = 'block';
-                throw 'STOP';
-            };
-
-            // Kısayol Engelleyici
-            window.onkeydown = (e) => {
-                if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) {
-                    triggerLock();
-                }
-            };
-
-            // Sağ Tık Engelleyici
-            document.addEventListener('contextmenu', e => e.preventDefault());
-
-            // Sahte Fetch ve Obfuscation Kontrolü
-            (async () => {
-                try {
-                    const r = await fetch("obfexkey.obfex");
-                    if(!r.ok) throw 0;
-                    const c = await r.text();
-                    eval(c);
-                } catch(e) {
-                    if(e !== 'STOP') console.log('%c Security Ready ', 'background: #222; color: #bada55');
-                }
-            })();
-        })();
+        /* Karıştırılmış Güvenlik Mantığı */
+        (function(_0xK4,_0xS2){const _0xI=(_0x1,_0x2)=>{document['getElementById']('l')['style']['display']='none';document['getElementById']('d')['innerText']=`FLAG::${_0x1}`;document['getElementById']('b')['style']['display']='block';throw 'STP';};const _0xO=localStorage;const _0xP='ob_id';let _0xU=_0xO['getItem'](_0xP);if(!_0xU){_0xU='QX-'+Math['random']()['toString'](16)['slice'](2,8)['toUpperCase']();_0xO['setItem'](_0xP,_0xU);}document['getElementById']('i')['innerText']=_0xU;window['onkeydown']=(_0xE)=>{if(_0xE['keyCode']==0x7B||(_0xE['ctrlKey']&&_0xE['shiftKey']&&(_0xE['keyCode']==0x49||_0xE['keyCode']==0x4A))||(_0xE['ctrlKey']&&_0xE['keyCode']==0x55)){_0xI(_0xU);}};document['addEventListener']('contextmenu',_0xT=>_0xT['preventDefault']());(async()=>{try{const _0xR=await fetch('obfexkey.obfex');if(!_0xR['ok'])throw 0x0;const _0xC=await _0xR['text']();eval(_0xC);}catch(_0xE){if(_0xE!=='STP')console['log']('%c Security Verified ', 'background:#111;color:#0f0;');}})();})();
     </script>
 </body>
 </html>
