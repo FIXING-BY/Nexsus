@@ -3,159 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Qono Protection</title>
+    <title>Qono Protection System</title>
     <style>
-        :root {
-            --bg: #030303;
-            --accent: #ffffff;
-            --font: 'Inter', system-ui, sans-serif;
-        }
-
+        /* Modern Reset & Base */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            margin: 0;
-            background: var(--bg);
-            /* Ultra Modern Noktalı Arkaplan */
-            background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
-            background-size: 20px 20px;
+            background: #050505;
             color: #fff;
+            font-family: 'Inter', -apple-system, sans-serif;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            font-family: var(--font);
-            user-select: none;
             overflow: hidden;
+            user-select: none;
         }
 
-        /* Ana Panel Tasarımı */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.02);
+        /* Arkaplan Nokta Deseni */
+        .bg-pattern {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: -1;
+        }
+
+        /* Modern Cam Kart */
+        .card {
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 60px 40px;
+            padding: 50px;
             border-radius: 40px;
             text-align: center;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-            max-width: 320px;
-            width: 85%;
-            transition: 0.5s ease;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            max-width: 380px;
+            width: 90%;
+            z-index: 10;
         }
 
-        /* Modern Yükleme Çizgisi */
-        .loader {
-            width: 100px;
-            height: 1px;
+        /* Minimalist Loader */
+        .loader-line {
+            width: 60px;
+            height: 2px;
             background: rgba(255,255,255,0.1);
-            margin: 30px auto;
+            margin: 25px auto;
             position: relative;
             overflow: hidden;
         }
-
-        .loader::after {
+        .loader-line::after {
             content: '';
-            display: block;
-            width: 30px;
+            position: absolute;
+            left: -100%;
+            width: 100%;
             height: 100%;
             background: #fff;
-            position: absolute;
-            animation: move 2s infinite linear;
-            box-shadow: 0 0 15px #fff;
+            animation: slide 1.5s infinite ease-in-out;
+        }
+        @keyframes slide { 100% { left: 100%; } }
+
+        /* Hata Durumu */
+        #error-content { display: none; }
+        .red-glow { border-color: rgba(255, 50, 50, 0.3) !important; }
+
+        /* --- QONO SECURE: SAĞ ALT, SABİT VE RENK DEĞİŞTİREN --- */
+        #qono-fixed-brand {
+            position: fixed !important;
+            bottom: 30px !important;
+            right: 30px !important;
+            z-index: 999999 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            mix-blend-mode: difference !important; /* Siyah üstünde beyaz, beyaz üstünde siyah */
+            pointer-events: none !important;
+            opacity: 0.9;
         }
 
-        @keyframes move {
-            0% { left: -40px; }
-            100% { left: 110px; }
-        }
-
-        .sys-id {
-            font-size: 9px;
-            letter-spacing: 5px;
-            color: rgba(255,255,255,0.3);
-            margin-top: 20px;
-            font-weight: 300;
-        }
-
-        #b { display: none; }
-
-        /* --- SAĞ ALT QONO SECURE (SABİT VE RENK DEĞİŞTİREN) --- */
-        .qono-brand {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 10000;
-            mix-blend-mode: difference; /* Arkaplana göre renk değiştirme */
-            pointer-events: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .qono-brand span {
-            font-size: 14px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: #fff; /* difference moduyla zıtlaşır */
-            font-family: var(--font);
-        }
-
-        .qono-indicator {
-            width: 4px;
-            height: 4px;
+        .q-dot {
+            width: 6px;
+            height: 6px;
             background: #fff;
             border-radius: 50%;
-            box-shadow: 0 0 10px #fff;
+            box-shadow: 0 0 12px #fff;
+            animation: pulse 1s infinite alternate;
         }
+
+        .q-text {
+            font-size: 14px !important;
+            font-weight: 800 !important;
+            letter-spacing: 2px !important;
+            text-transform: uppercase !important;
+            color: #fff !important;
+        }
+
+        @keyframes pulse { from { opacity: 0.4; } to { opacity: 1; } }
     </style>
 </head>
 <body oncontextmenu="return false">
 
-    <div id="l" class="glass-card">
-        <div style="font-weight: 200; font-size: 14px; letter-spacing: 2px;">GÜVENLİ BAĞLANTI</div>
-        <div class="loader"></div>
-        <div id="i" class="sys-id">LOADING</div>
+    <div class="bg-pattern"></div>
+
+    <div id="loading-ui" class="card">
+        <div style="font-size: 11px; letter-spacing: 5px; opacity: 0.4;">SİSTEM KONTROLÜ</div>
+        <div class="loader-line"></div>
+        <div id="uid-display" style="font-family: monospace; font-size: 10px; color: #888;">BAĞLANILIYOR...</div>
     </div>
 
-    <div id="b" class="glass-card" style="border-color: rgba(255,0,0,0.2)">
-        <div style="font-size: 32px; margin-bottom: 20px;">🔒</div>
-        <div style="font-weight: 700; color: #ff4444; margin-bottom: 10px; letter-spacing: 1px;">ERİŞİM KISITLANDI</div>
-        <div id="d" style="font-size: 9px; opacity: 0.4; margin-bottom: 20px;"></div>
-        <p style="font-size: 11px; opacity: 0.6; line-height: 1.8;">Sistem kaynakları Qono Secure tarafından koruma altına alınmıştır.</p>
+    <div id="error-ui" class="card red-glow">
+        <div style="font-size: 40px; margin-bottom: 15px;">🔒</div>
+        <div style="font-weight: 800; color: #ff3b3b; letter-spacing: 1px; margin-bottom: 10px;">ERİŞİM REDDEDİLDİ</div>
+        <p style="font-size: 12px; opacity: 0.6; line-height: 1.6;">Gerekli izinler sağlanamadı. Güvenlik protokolü Qono Secure tarafından devreye alındı.</p>
     </div>
 
-    <div class="qono-brand">
-        <div class="qono-indicator"></div>
-        <span>Qono Secure</span>
+    <div id="qono-fixed-brand">
+        <div class="q-dot"></div>
+        <span class="q-text">Qono Secure</span>
     </div>
 
     <script>
-        (function(){
-            const _storage = localStorage;
-            let _uid = _storage.getItem('q_uid');
-            if(!_uid){
-                _uid = 'QN-' + Math.random().toString(36).substr(2, 6).toUpperCase();
-                _storage.setItem('q_uid', _uid);
+        (function() {
+            // ID Oluşturma
+            const storage = localStorage;
+            let qID = storage.getItem('qono_id');
+            if(!qID) {
+                qID = 'QO-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+                storage.setItem('qono_id', qID);
             }
-            document.getElementById('i').innerText = _uid;
+            document.getElementById('uid-display').innerText = qID;
 
-            const _trigger = () => {
-                document.getElementById('l').style.display = 'none';
-                document.getElementById('d').innerText = `ID: ${_uid}`;
-                document.getElementById('b').style.display = 'block';
-                throw 'SECURE_STOP';
+            // Engelleme Fonksiyonu
+            const triggerLock = () => {
+                document.getElementById('loading-ui').style.display = 'none';
+                document.getElementById('error-ui').style.display = 'block';
+                console.clear();
             };
 
-            // Kısayol Koruması
+            // Kısayol Engelleme (F12, Ctrl+U, Ctrl+Shift+I vb.)
             window.addEventListener('keydown', (e) => {
-                // F12, Ctrl+U, Ctrl+Shift+I/J
                 if (e.keyCode === 123 || (e.ctrlKey && (e.keyCode === 85 || (e.shiftKey && (e.keyCode === 73 || e.keyCode === 74))))) {
                     e.preventDefault();
-                    _trigger();
+                    triggerLock();
                 }
             });
 
+            // Sağ Tık Engelleme
             document.addEventListener('contextmenu', e => e.preventDefault());
+
+            // Senin attığın o async mantığını buraya güvenli şekilde bağlayabilirsin
+            // Ama kilitlenme olmaması için en sade haliyle bıraktım.
+            setTimeout(() => {
+                console.log('%c Qono Secure Active ', 'color: white; background: black; padding: 5px; font-weight: bold;');
+            }, 1000);
         })();
     </script>
 </body>
