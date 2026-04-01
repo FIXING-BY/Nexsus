@@ -1,1 +1,84 @@
-(async function(){const _0x1=s=>{const a="ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";let p=[],q=0,l=0;s=s.replace(/=+$/,"");for(let i=0;i<s.length;i++){let v=a.indexOf(s[i].toUpperCase());if(v===-1)continue;q=(q<<5)|v;l+=5;if(l>=8){p.push(String.fromCharCode((q>>(l-8))&255));l-=8}}return p.join('')};try{const r=await fetch("obfexfixingsearch.txt");if(!r.ok)throw"Err";const d=(await r.text()).trim(),s1=atob(d),s2=s1.split("").reverse().join(""),s3=_0x1(s2),f=decodeURIComponent(escape(s3));document.open();document.write(f);const b=document.createElement("div");b.style="position:fixed;bottom:12px;right:12px;background:rgba(255,255,255,0.1);color:#fff;padding:4px 10px;border:1px solid rgba(255,255,255,0.2);border-radius:50px;font-size:9px;z-index:999999;backdrop-filter:blur(10px);pointer-events:none;font-family:sans-serif;";b.innerHTML="\uD83D\uDEE1\uFE0F OBFEX SECURE";document.body.appendChild(b);document.close()}catch(e){console.error("HATA");document.body.innerHTML="<b style='color:red'>Hata!</b>"}})();
+(async function() {
+    // Base32 ve Veri İşleme Fonksiyonu
+    const _0x1 = s => {
+        const a = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+        let p = [], q = 0, l = 0;
+        s = s.replace(/=+$/, "");
+        for (let i = 0; i < s.length; i++) {
+            let v = a.indexOf(s[i].toUpperCase());
+            if (v === -1) continue;
+            q = (q << 5) | v;
+            l += 5;
+            if (l >= 8) {
+                p.push(String.fromCharCode((q >> (l - 8)) & 255));
+                l -= 8;
+            }
+        }
+        return p.join('');
+    };
+
+    try {
+        const r = await fetch("obfexfixingsearch.txt");
+        if (!r.ok) throw "Err";
+        
+        const d = (await r.text()).trim();
+        const s1 = atob(d);
+        const s2 = s1.split("").reverse().join("");
+        const s3 = _0x1(s2);
+        const f = decodeURIComponent(escape(s3));
+
+        // Sayfayı yazdır
+        document.open();
+        document.write(f);
+        
+        // --- QONO SECURE ENJEKSİYONU (SABİT VE MODERN) ---
+        const style = document.createElement("style");
+        style.innerHTML = `
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap');
+            .qono-fixed {
+                position: fixed !important;
+                bottom: 25px !important;
+                right: 25px !important;
+                z-index: 2147483647 !important; /* En üst katman */
+                display: flex !important;
+                align-items: center !important;
+                gap: 8px !important;
+                mix-blend-mode: difference !important; /* Arkaplana göre renk değiştirme */
+                pointer-events: none !important;
+                font-family: 'Inter', sans-serif !important;
+                background: none !important;
+                padding: 0 !important;
+                border: none !important;
+            }
+            .qono-dot {
+                width: 5px;
+                height: 5px;
+                background: #fff;
+                border-radius: 50%;
+                box-shadow: 0 0 8px #fff;
+                animation: qono-pulse 1.5s infinite alternate;
+            }
+            .qono-text {
+                font-size: 13px !important;
+                font-weight: 800 !important;
+                letter-spacing: 1.5px !important;
+                text-transform: uppercase !important;
+                color: #fff !important;
+                opacity: 0.9;
+            }
+            @keyframes qono-pulse { from { opacity: 0.4; transform: scale(0.8); } to { opacity: 1; transform: scale(1.2); } }
+        `;
+        document.head.appendChild(style);
+
+        const badge = document.createElement("div");
+        badge.className = "qono-fixed";
+        badge.innerHTML = `<div class="qono-dot"></div><span class="qono-text">Qono Secure</span>`;
+        document.body.appendChild(badge);
+        // ------------------------------------------------
+
+        document.close();
+    } catch (e) {
+        console.error("GÜVENLİK HATASI");
+        document.body.innerHTML = "<div style='height:100vh; display:flex; align-items:center; justify-content:center; background:#000; color:red; font-family:sans-serif;'><b>SİSTEM KORUMASI AKTİF</b></div>";
+    }
+})();
